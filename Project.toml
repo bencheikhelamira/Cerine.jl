@@ -1,0 +1,7 @@
+name = "Cerinejulia"
+uuid = "deeeead3-6511-4999-b7fa-caadc923c731"
+authors = ["BENCHEIKH El Amira Cerine <bencheikhelamiracerine@gmail.com>"]
+version = "0.0.1"
+
+[compat]
+julia = "1.10"
