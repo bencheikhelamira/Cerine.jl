@@ -123,7 +123,7 @@ function run_app()
             # titre
             DOM.h2("Cerinejulia — Mini application"),
 
-            # résumé de la sélection courante (mis à jour automatiquement)
+            # résumé de la sélection courante 
             DOM.div(style="margin-bottom:12px; font-size:14px;")(
                 "Sélection actuelle : ",
                 DOM.b()(dataset_choice),
