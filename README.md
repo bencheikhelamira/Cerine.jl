@@ -39,30 +39,39 @@ Structure du projet
 -------------------
 Le projet est organisé de la manière suivante :
 
-Cerinejulia/
-│
-├── src/
-│   └── Cerinejulia.jl
-│       → fichier principal contenant le module et l’application interactive
-│
-├── data/
-│   └── datasets.jl
-│       → génération des jeux de données simulés
-│
-├── model/
-│   └── models.jl
-│       → définition des modèles et de la métrique RMSE
-│
-├── test/
-│   └── runtests.jl
-│       → tests unitaires du package
-│
-├── Project.toml
-│   → dépendances du projet
-│
-└── README.txt
-│   → ce document
+- Cerinejulia/
+- src/
+  - Cerinejulia.jl
+    - Fichier principal du projet.
+    - Contient le module Cerinejulia ainsi que l’application interactive développée avec Bonito.
+    - Gère la logique globale : sélection du dataset, sélection du modèle, calcul du RMSE et affichage des résultats.
 
+- data/
+  - datasets.jl
+    - Génération des jeux de données simulés.
+    - Contient les datasets linéaire et non linéaire.
+    - Chaque dataset est généré dynamiquement et retourne un DataFrame avec les colonnes nécessaires.
+
+- model/
+  - models.jl
+    - Définition des modèles utilisés dans l’application.
+    - Modèle constant (baseline).
+    - Modèle de régression linéaire.
+    - Implémentation de la métrique RMSE (Root Mean Squared Error).
+
+- test/
+  - runtests.jl
+    - Tests unitaires du package.
+    - Vérifie la génération correcte des datasets.
+    - Vérifie l’application des modèles et le calcul du RMSE.
+
+- Project.toml
+  - Fichier de configuration du projet Julia.
+  - Liste les dépendances nécessaires au bon fonctionnement du package (Bonito, DataFrames, Observables, etc.).
+
+- README.txt
+  - Document de présentation du projet.
+  - Explique les objectifs, la structure, le fonctionnement de l’application et les étapes pour l’exécuter.
 
 Description des datasets
 ------------------------
