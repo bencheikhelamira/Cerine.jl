@@ -1,58 +1,82 @@
-CERINEJULIA
-===========
+RAPPORT DE PROJET — CERINEJULIA
+==============================
 
-BENCHEIKH  El Amira Cerine
-Master 2 – Statistics & Data Science
-
-DESCRIPTION
------------
-
-Cerinejulia est un mini package Julia à vocation pédagogique.  
-Il permet d'illustrer les bases de la modélisation statistique à travers :
-- des datasets simulés,
-- des modèles simples,
-- une interface interactive minimale construite avec Bonito.
-
-L'objectif principal du projet est de montrer :
-- comment structurer un package Julia,
-- comment appliquer différents modèles à des jeux de données,
-- comment comparer leurs performances à l'aide d'une métrique,
-- et comment proposer une interaction utilisateur simple.
+Nom et prénom :
+---------------
+BENCHEIKH El Amira Cerine
 
 
-STRUCTURE DU PROJET
+Introduction
+------------
+Ce projet, intitulé « Cerinejulia », est un mini-projet pédagogique développé en Julia.
+L’objectif principal est de comprendre et de mettre en pratique :
+
+- la structuration d’un package Julia,
+- la génération et la manipulation de jeux de données,
+- l’application de modèles statistiques simples,
+- l’évaluation des performances via une métrique (RMSE),
+- et la création d’une application interactive minimale à l’aide du package Bonito.
+
+Ce projet n’a pas pour but de construire un modèle complexe, mais plutôt de bien comprendre
+la relation entre les données, les modèles et leurs hypothèses, tout en respectant de bonnes
+pratiques de développement en Julia.
+
+
+Packages utilisés
+-----------------
+Les principaux packages utilisés dans ce projet sont :
+
+- DataFrames : pour stocker et manipuler les jeux de données sous forme de tableaux.
+- Statistics : pour les calculs statistiques de base (moyenne, etc.).
+- Observables : pour gérer les valeurs réactives dans l’application.
+- Bonito et Bonito.DOM : pour créer une interface utilisateur interactive dans le navigateur.
+
+Ces packages sont déclarés dans le fichier Project.toml afin d’assurer la reproductibilité
+de l’environnement.
+
+
+Structure du projet
 -------------------
+Le projet est organisé de la manière suivante :
+
 Cerinejulia/
 │
 ├── src/
-│   └── Cerinejulia.jl        : module principal et application Bonito
+│   └── Cerinejulia.jl
+│       → fichier principal contenant le module et l’application interactive
 │
 ├── data/
-│   └── datasets.jl          : génération des datasets simulés
+│   └── datasets.jl
+│       → génération des jeux de données simulés
 │
 ├── model/
-│   └── models.jl            : définition des modèles et de la métrique
+│   └── models.jl
+│       → définition des modèles et de la métrique RMSE
 │
 ├── test/
-│   └── runtests.jl          : tests unitaires
+│   └── runtests.jl
+│       → tests unitaires du package
 │
-├── Project.toml             : dépendances du projet
-└── README.txt               : documentation
+├── Project.toml
+│   → dépendances du projet
+│
+└── README.txt
+│   → ce document
 
 
-DATASETS
---------
-Les datasets sont générés dynamiquement en mémoire (ils ne sont pas chargés depuis des fichiers).
+Description des datasets
+------------------------
+Deux jeux de données sont générés dynamiquement (ils ne sont pas chargés depuis des fichiers).
 
 1) Dataset linéaire
-   - Relation : y = 3x + bruit
-   - Bruit gaussien
-   - Cas où la régression linéaire est bien adaptée
+   - Relation sous-jacente : y = 3x + bruit
+   - Le bruit est gaussien
+   - Ce dataset est compatible avec une régression linéaire
 
 2) Dataset non linéaire
-   - Relation : y = x² + bruit
-   - Bruit gaussien
-   - Sert à illustrer les limites d'un modèle linéaire
+   - Relation sous-jacente : y = x² + bruit
+   - Le bruit est gaussien
+   - Ce dataset ne respecte pas l’hypothèse de linéarité
 
 Chaque dataset contient :
 - 200 observations
@@ -61,76 +85,109 @@ Chaque dataset contient :
   - y : variable cible
 
 
-MODELES
--------
-Deux modèles sont implémentés :
+Description des modèles
+-----------------------
+Deux modèles simples sont implémentés :
 
 1) Modèle constant (baseline)
-   - Prédit la moyenne de la variable cible
-   - Sert de référence simple
+   - Prédit la moyenne de la variable cible y
+   - Sert de référence minimale
 
 2) Régression linéaire
    - Ajustement par moindres carrés
-   - Appliquée aux deux datasets afin de comparer les performances
+   - Suppose une relation linéaire entre x et y
+   - Nécessite la présence d’une colonne explicative x
 
 
-METRIQUE
---------
-La performance des modèles est évaluée à l'aide du RMSE (Root Mean Squared Error) :
+Métrique utilisée
+-----------------
+La performance des modèles est évaluée à l’aide du RMSE (Root Mean Squared Error) :
 
-RMSE = sqrt( (1/n) * somme( (y - y_hat)^2 ) )
+RMSE = sqrt( (1/n) * somme( (y - ŷ)² ) )
 
-
-INTERFACE INTERACTIVE
----------------------
-Une interface minimale est proposée via Bonito.
-Elle permet :
-- de choisir le dataset,
-- de choisir le modèle,
-- de lancer l'évaluation,
-- d'afficher la valeur du RMSE.
-
-L'interface est volontairement simple et fonctionnelle.
+Cette métrique permet de mesurer l’erreur moyenne entre les valeurs réelles et les prédictions.
 
 
-LANCER LE PROJET
-----------------
+Fonctionnement de l’application
+--------------------------------
+L’application interactive permet :
+
+- de sélectionner un dataset (linéaire ou non linéaire),
+- de sélectionner un modèle (constant ou régression linéaire),
+- de lancer le calcul,
+- d’afficher le RMSE avec le contexte (dataset + modèle).
+
+Exemple de résultat :
+- Dataset linéaire + modèle constant → RMSE ≈ 3.751
+- Dataset linéaire + régression linéaire → RMSE plus faible
+- Dataset non linéaire + régression linéaire → message de non-compatibilité
+
+
+Gestion des cas d’erreur
+------------------------
+Lorsque la configuration choisie n’est pas compatible avec les hypothèses du modèle
+(par exemple : dataset non linéaire avec régression linéaire), l’application n’affiche
+pas une erreur brute.
+
+À la place, un message explicite est affiché, indiquant que la configuration
+dataset / modèle n’est pas compatible.
+
+Cela montre que l’application est robuste et que le problème ne vient pas d’un bug,
+mais des hypothèses statistiques du modèle choisi.
+
+
+Étapes pour lancer le projet
+-----------------------------
 1) Se placer dans le dossier du projet :
    cd Cerinejulia
 
 2) Lancer Julia :
    julia
 
-3) Activer l'environnement du projet :
+3) Passer en mode package :
    ]
+
+4) Activer l’environnement du projet :
    activate .
 
-4) Revenir en mode Julia (Backspace), puis :
+5) Précompiler (optionnel mais recommandé) :
+   precompile
+
+6) Revenir au mode Julia (touche Backspace)
+
+7) Charger le package :
    using Cerinejulia
+
+8) Lancer l’application :
    run_app()
 
-Une interface Bonito s'ouvre automatiquement dans le navigateur.
+
+Mise à jour du code
+-------------------
+À chaque modification du code :
+- je quitte Julia avec exit()
+- je relance Julia
+- j’active à nouveau l’environnement
+- je recharge le package avec using Cerinejulia
+
+Cela garantit que la version exécutée est bien la version mise à jour du code.
 
 
-TESTS
------
-Des tests unitaires sont fournis pour vérifier :
-- la génération des datasets,
-- l'application des modèles,
-- le calcul de la métrique RMSE.
+Conclusion
+----------
+Ce projet m’a permis de mieux comprendre :
 
-Pour lancer les tests :
-]
-test
+- la logique des packages Julia,
+- la gestion des environnements avec Project.toml,
+- la relation entre hypothèses statistiques et données,
+- et la création d’une application interactive simple mais robuste.
 
-
-OBJECTIFS PEDAGOGIQUES
-----------------------
-Ce projet permet de mettre en pratique :
-- la structuration d'un package Julia,
-- la séparation des responsabilités (données / modèles / interface),
-- l'utilisation d'un environnement de projet,
-- la comparaison de modèles simples,
-- l'intégration d'une interface interactive légère.
+J’ai particulièrement apprécié le côté expérimental de Julia et la possibilité
+de combiner calcul statistique et interface utilisateur de manière fluide.
 
 
+Remerciements
+-------------
+Je tiens à remercier sincèrement Rémi, notre enseignant, pour cette belle expérience
+autour du langage Julia. Ce projet m’a permis de découvrir Julia de manière concrète
+et ludique, et j’ai réellement pris plaisir à expérimenter et à construire cette application.
